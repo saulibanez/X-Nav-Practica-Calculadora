@@ -16,7 +16,7 @@
 }
 
 .calculator {
-    width:200px;
+    width:300px;
     height:auto;
     padding:10px 0;
     margin: auto;
@@ -35,15 +35,18 @@
     text-align: center;
 }
 
-#reset{
+#reset, #ans{
     background: red;
 }
 #igual{
     background: #55EEFF;
 }
 
+.calculator .button{
+    width: 50px;
+}
 #zero{
-    width: 65px;
+    width: 105px;
 }
 
 .author {
