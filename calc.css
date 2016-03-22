@@ -35,17 +35,26 @@
     text-align: center;
 }
 
-#reset, #ans{
+#ans {
     background: red;
+    color: black;
 }
+
+#reset, #arrow {
+    background: red;
+    width:80px;
+    color: black;
+}
+
 #igual{
     background: #55EEFF;
 }
 
-.calculator .button{
+.calculator .button {
     width: 50px;
+    color: black;
 }
-#zero{
+#zero {
     width: 105px;
 }
 
@@ -55,6 +64,6 @@
     border-top: 0px;
 }
 
-.notes #help{
+.notes #help {
     color: red;
 }

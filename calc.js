@@ -20,6 +20,9 @@ $(document).ready(function() {
 	var exp=0;
 	var ans=false;
 	var aux_total=0;
+	var last_value=0;
+	var new_value="";
+	var suprimir=false;
 
 	$(".button").click(function(){
 		if ($(this).text() != "RESET" && $(this).text() != "=")	{
@@ -41,13 +44,24 @@ $(document).ready(function() {
 				exponente=true;
 			}else if(valor=="ans"){
 				ans=true;
+			}else if(valor=="arrow"){
+				last_value=total.toString().split("");
+				console.log(total);
+				for (var i = 0; i < total.toString().split("").length-1; i++) {
+					new_value+=last_value[i];
+				};
+				total=parseInt(new_value);
+				new_value="";
+				last_value=0;
+				$("#textWindows").text(total);
+
 			}
 
 			if((valor=="cos")||(valor=="sin")||(valor=="tan")){
 				$("#textWindows").append("(");
 				aux=valor;
 				trigonometry=true;
-			}else if((valor!="sqrt")&&(valor!="^")&&(valor!="ans")){
+			}else if((valor!="sqrt")&&(valor!="^")&&(valor!="ans")&&(valor!="arrow")){
 				total += valor;
 				if(exponente){
 					exp+=valor;
@@ -130,7 +144,7 @@ $(document).ready(function() {
 			}
 		}else if((tecla==115)||(tecla==105)||(tecla==110)||
 			(tecla==99)||(tecla==111)||(tecla==116)||(tecla==97)||
-			(tecla==112)||(tecla==108) ||(tecla==113)||(tecla==101)||(tecla==115)){
+			(tecla==112)||(tecla==108) ||(tecla==113)||(tecla==101)||(tecla==117)){
 				tri += String.fromCharCode(tecla);
 				if(tri=="pi"){
 					$("#textWindows").append("pi");
@@ -150,7 +164,11 @@ $(document).ready(function() {
 					base=total;
 					tri="";
 				}if(tri=="ans"){
+					console.log("hola");
 					ans=true;
+					tri="";
+				}if(tri=="sup"){
+					suprimir=true;
 					tri="";
 				}
 		}
@@ -172,6 +190,19 @@ $(document).ready(function() {
 			$("#textWindows").text(aux_total);
 			total=aux_total;
 			ans=false;
+		}
+
+		if(suprimir){
+			last_value=total.toString().split("");
+			console.log(total);
+			for (var i = 0; i < total.toString().split("").length-1; i++) {
+				new_value+=last_value[i];
+			};
+			total=parseInt(new_value);
+			new_value="";
+			last_value=0;
+			$("#textWindows").text(total);
+			suprimir=false;
 		}
 	});
 });
