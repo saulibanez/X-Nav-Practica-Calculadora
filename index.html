@@ -8,11 +8,17 @@
 	    <script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
 	</head>
 
-	<body>
+		<body>
 		<p id="title"><u><b>CALCULADORA</b></u></p>
 		<br> <br>
 		<div class="calculator">
 			<div id="textWindows"></div>
+			<p>
+				<button id="cos" class="button">cos</button>
+				<button id="sin" class="button">sin</button>
+				<button id="tan" class="button">tan</button>
+			</p>
+
 			<p>
 				<button id="7" class="button">7</button>
 				<button id="8" class="button">8</button>
@@ -44,8 +50,11 @@
 			</p>
 		</div>
 		<div class="notes">
-			<p>La tecla <b>"ENTER"</b> muestra el resultado de la operación.<br>
-				La tecla <b>"r"</b> resetea los elementos que hay en la pantalla.</p>
+			<p>La tecla <b>ENTER</b> muestra el resultado de la operación.<br>
+				La tecla <b>r</b> resetea los elementos que hay en la pantalla.<br>
+				Puedes escribir <b>sin</b>, <b>cos</b> o <b>tan</b> con el teclado para las operaciones trigonométricas.</p>
+			<p id="help">Si has escrito mal: cos, sin o tan, y no se escribe por pantalla, haz un reset.<br>
+				Solo se puede hacer una operacion de cos, sin o tan a la vez.</p>
 		</div>
 		<div class="author">
 			<p>By: Saúl Ibáñez Cerro</p>
