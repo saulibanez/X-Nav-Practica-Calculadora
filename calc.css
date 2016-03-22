@@ -45,3 +45,9 @@
 #zero{
     width: 65px;
 }
+
+.author {
+    padding: 100px 100px 100px 100px;
+    text-align: right;
+    border-top: 0px;
+}
