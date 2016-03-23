@@ -3,21 +3,18 @@ function deleteLastNum(total){
 	var new_value="";
 
 	last_value=total.toString().split("");
-	console.log(total);
 	for (var i = 0; i < total.toString().split("").length-1; i++) {
 		new_value+=last_value[i];
 	};
 	total=parseInt(new_value);
 	new_value="";
 	last_value=0;
-	$("#textWindows").text(total);
 	return total;
 }
 
 function trigonometria(tri, op){
 
 	if(tri=="cos"){
-		console.log(Math.cos(op), op)
 		return Math.cos(op);
 	}else if(tri=="sin"){
 		return Math.sin(op);
@@ -39,6 +36,9 @@ $(document).ready(function() {
 	var aux_total=0;
 	var suprimir=false;
 	var value_trig=0;
+	var log=false;
+	var value_log=0;
+	var value_sq=0;
 
 	$(".button").click(function(){
 		if ($(this).text() != "RESET" && $(this).text() != "=")	{
@@ -50,7 +50,7 @@ $(document).ready(function() {
 				valor=Math.PI;
 			}else if(valor=="ln"){
 				$("#textWindows").append("(");
-				valor=Math.LN2;
+				log=true;
 			}else if(valor=="sqrt"){
 				sq=true;
 			}else if(valor=="numE"){
@@ -62,18 +62,20 @@ $(document).ready(function() {
 				ans=true;
 			}else if(valor=="arrow"){
 				total=deleteLastNum(total);
+				$("#textWindows").text(total);
 			}
 
 			if((valor=="cos")||(valor=="sin")||(valor=="tan")){
 				$("#textWindows").append("(");
 				aux=valor;
 				trigonometry=true;
-
 			}else if((trigonometry) && (valor!=")")){
-					console.log(valor);
-					value_trig += valor;
-					console.log(value_trig);
-			}else if((valor!="sqrt")&&(valor!="^")&&(valor!="ans")&&(valor!="arrow")&&(valor!=")")){
+				value_trig += valor;
+			}else if((log) && (valor!=")")&&(valor!="ln")){
+				value_log += valor;
+			}else if((sq)&&(valor!="sqrt")){
+				value_sq+=valor;
+			}else if((valor!="sqrt")&&(valor!="^")&&(valor!="ans")&&(valor!="arrow")&&(valor!=")")&&(valor!="ln")){
 				total += valor;
 				if(exponente){
 					exp+=valor;
@@ -84,11 +86,21 @@ $(document).ready(function() {
 		if($(this).text()==")"){
 			if(trigonometry){
 				total+=trigonometria(aux, value_trig);
-				console.log(total);
 				trigonometry=false;
 				value_trig=0;
 			}
+			if(log){
+				total+=Math.log(value_log);
+				log=false;
+				value_log=0;
+			}
+		}
 
+		if((sq)&&((valor=="+")||(valor=="-")||(valor=="*")||(valor=="/"))){
+			sq=false;
+			value_sq=deleteLastNum(value_sq);
+			total+=Math.sqrt(value_sq)+valor;
+			value_sq=0;
 		}
 
 		if ($(this).text() == "=") {
@@ -96,10 +108,16 @@ $(document).ready(function() {
 				total=trigonometria(aux, value_trig);
 				$("#textWindows").text(total);
 				trigonometry=false;
+				value_trig=0;
+			}else if(log){
+				$("#textWindows").text(Math.log(value_log));
+				value_log=0;
+				log=false;
 			}else if(sq){
 				sq=false;
-				total=Math.sqrt(total);
-				$("#textWindows").text(total);
+				total+=Math.sqrt(value_sq);
+				value_sq=0;
+				$("#textWindows").text(eval(total));
 			}else if(exponente){
 				exponente=false;
 				total=Math.pow(base, exp);
@@ -116,6 +134,9 @@ $(document).ready(function() {
 			$("#textWindows").text("");
 			aux_total=total;
 			total="";
+			value_log=0;
+			value_sq=0;
+			value_trig=0;
 		}
 		if($(this).text() == "ANS"){
 			$("#textWindows").text(aux_total);
@@ -129,12 +150,19 @@ $(document).ready(function() {
 		
 
 		if(tecla==41){
+			$("#textWindows").append(")");
 			if(trigonometry){
-				$("#textWindows").append(")");
 				total+=trigonometria(aux, value_trig);
-				console.log("total", total);
 				trigonometry=false;
 				value_trig=0;
+			}else if(log){
+				total+=Math.log(value_log);
+				log=false;
+				value_log=0;
+			}else if(sq){
+				total+=Math.sqrt(value_sq);
+				sq=false;
+				value_sq=0;
 			}
 		}
 
@@ -155,7 +183,6 @@ $(document).ready(function() {
 				base=0;
 				exp=0;
 			}else{
-				console.log(total);
 				$("#textWindows").text(eval(total));
 				total=eval(total);
 			}
@@ -166,12 +193,12 @@ $(document).ready(function() {
 			aux_total=total;
 			total="";
 			tri="";
+			value_log=0;
+			value_sq=0;
+			value_trig=0;
 			return;
 		}
 		
-		console.log(tecla);
-
-
 		if((tecla > 44)&&(tecla<58)||(tecla==42)||(tecla==43)||(tecla==47)){
 			var valor=String.fromCharCode(tecla);
 			$("#textWindows").append(valor);
@@ -179,12 +206,15 @@ $(document).ready(function() {
 			if(exponente){
 				exp+=valor;
 			}else if((trigonometry) && (valor!=41)){
-				console.log(valor);
 				value_trig += valor;
-				console.log(value_trig);
+			}else if((log) && (valor!=41)){
+				value_log += valor;
+			}else if((sq) && (valor!=41)){
+				value_sq += valor;
 			}else{
 				total += valor;
 			}
+
 		}else if((tecla==115)||(tecla==105)||(tecla==110)||
 			(tecla==99)||(tecla==111)||(tecla==116)||(tecla==97)||
 			(tecla==112)||(tecla==108) ||(tecla==113)||(tecla==101)){
@@ -195,7 +225,7 @@ $(document).ready(function() {
 					tri="";
 				}if(tri=="ln"){
 					$("#textWindows").append("ln2(");
-					total+=Math.LN2;
+					log=true;
 					tri="";
 				}if(tri=="e"){
 					$("#textWindows").append("e");
@@ -236,6 +266,7 @@ $(document).ready(function() {
 
 		if(suprimir){
 			total=deleteLastNum(total);
+			$("#textWindows").text(total);
 			suprimir=false;
 		}
 	});
