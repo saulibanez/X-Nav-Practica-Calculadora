@@ -1,3 +1,9 @@
+html {
+  background-image: url("einstein.jpg");
+  background-repeat:no-repeat;
+  background-position: 120px 90px;
+}
+
 #title{
     width:200px;
     height:auto;
